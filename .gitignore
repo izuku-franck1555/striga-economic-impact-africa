@@ -1,0 +1,34 @@
+# Data files (too large for GitHub — see README for data sources)
+*.tif
+*.tiff
+*.npy
+*.npz
+*.shp
+*.shx
+*.dbf
+*.prj
+*.geojson
+
+# Outputs
+*.png
+*.pdf
+*.jpg
+*.jpeg
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+venv/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
