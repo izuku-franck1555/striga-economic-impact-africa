@@ -58,7 +58,7 @@ The analysis relies on the following publicly available datasets:
 | Bioclimatic variables (CHELSA v2.1) | Karger et al. | [chelsa-climate.org](https://chelsa-climate.org/) |
 | Soil properties | iSDAsoil | [isda-africa.com](https://isda-africa.com/isdasoil) |
 | Road network (GRIP) | Meijer et al. | [globio.info](https://www.globio.info/download-grip-dataset) |
-| Production projections | van Ittersum et al. (2025) | Available upon request |
+| Production projections | van Ittersum et al. (2025) | [Paper](https://doi.org/10.1073/pnas.2423669122) |
 
 ## Execution Order
 
