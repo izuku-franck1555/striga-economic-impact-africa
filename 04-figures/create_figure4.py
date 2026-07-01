@@ -43,14 +43,12 @@ plt.rcParams['pdf.fonttype'] = 42
 # PATHS — resolve data relative to original SCRIPTS/FUTURE-PROJECTION/
 # =====================================================================
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-STRIGA_BASE = '/Users/francktonle/Downloads/STRIGA_ANALYSIS'
+STRIGA_BASE = '/Volumes/PARTA/STRIGA_ANALYSIS'
 PANEL_DATA_DIR = os.path.join(
     STRIGA_BASE, 'climate_projections_publication', 'outputs', 'panel_data_corrected'
 )
 
-OUTPUT_DIR = os.path.normpath(
-    os.path.join(SCRIPT_DIR, '..', '..', '..', '04-FIGURES', 'REVISED')
-)
+OUTPUT_DIR = SCRIPT_DIR  # working folder (non-destructive regen)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 OUTPUT_PATH = os.path.join(OUTPUT_DIR, 'climate_results_figure_final_v8.png')
@@ -148,7 +146,7 @@ with open(os.path.join(PANEL_DATA_DIR, 'panel_b_decomposition.json'), 'r') as f:
 
 panel_c_df = pd.read_csv(os.path.join(PANEL_DATA_DIR, 'panel_c_phase_space.csv'))
 
-with open(os.path.join(PANEL_DATA_DIR, 'panel_d_regional_signatures.json'), 'r') as f:
+with open(os.path.join(SCRIPT_DIR, 'panel_d_enhanced.json'), 'r') as f:
     panel_d_data = json.load(f)
 
 with open(os.path.join(PANEL_DATA_DIR, 'panel_e_adoption_impact.json'), 'r') as f:
@@ -239,7 +237,7 @@ fig = plt.figure(figsize=(18, 20))
 gs = gridspec.GridSpec(
     3, 2, height_ratios=[1.1, 1, 1],
     hspace=0.35, wspace=0.3,
-    left=0.08, right=0.95, top=0.94, bottom=0.05,
+    left=0.08, right=0.95, top=0.97, bottom=0.05,
 )
 
 # =====================================================================
@@ -510,12 +508,6 @@ for y_line in [500, 1000, 1500, 2000, 2500]:
             linestyle='-', alpha=0.3, linewidth=0.5, zorder=0,
         )
 
-ax3.text(
-    0.02, 0.98, 'Error bars: 95% CI',
-    transform=ax3.transAxes, fontsize=10, style='italic',
-    color=PROF_COLORS['gray'], ha='left', va='top',
-)
-
 # =====================================================================
 # PANEL C: Country Trajectory Classification (with region markers — R1.3.4)
 # =====================================================================
@@ -694,21 +686,38 @@ for i, region in enumerate(regions_list):
     if region not in panel_d_data['values']:
         continue
     values = [panel_d_data['values'][region][metric] for metric in metrics]
+    stds = [panel_d_data['std'][region][metric] for metric in metrics]
+    ns = [panel_d_data['n'][region][metric] for metric in metrics]
+    cvals = panel_d_data['country_values'][region]
     style = REGION_STYLES.get(region, {'color': PROF_COLORS['gray'], 'marker': 'o'})
-
-    # Uncertainty: ±0.1 (same as original fill_between bands)
-    yerr = [0.1] * len(values)
+    xpos = x_metrics + offsets[i]
 
     ax4.bar(
-        x_metrics + offsets[i], values, bar_width_d,
+        xpos, values, bar_width_d,
         label=region, color=style['color'],
         edgecolor='white', linewidth=0.8, alpha=0.85,
     )
-    ax4.errorbar(
-        x_metrics + offsets[i], values, yerr=yerr,
-        fmt='none', capsize=3, capthick=1.2, elinewidth=1.2,
-        color='#333333', alpha=0.6, zorder=6,
-    )
+    # Real SD error bars, drawn only where n >= 2 (Southern Africa = 1 country -> no whisker)
+    mask = [j for j in range(len(metrics)) if ns[j] >= 2]
+    if mask:
+        ax4.errorbar(
+            [xpos[j] for j in mask], [values[j] for j in mask],
+            yerr=[stds[j] for j in mask],
+            fmt='none', capsize=2.5, capthick=1.0, elinewidth=1.0,
+            color='#333333', alpha=0.7, zorder=6,
+        )
+    # Overlay individual country data points (genuine distribution; n<=10 per group)
+    for j, metric in enumerate(metrics):
+        pts = [v for _, v in cvals[metric]]
+        if not pts:
+            continue
+        jit = (np.linspace(-bar_width_d * 0.28, bar_width_d * 0.28, len(pts))
+               if len(pts) > 1 else np.array([0.0]))
+        ax4.scatter(
+            xpos[j] + jit, pts,
+            s=13, color='white', edgecolors='#222222', linewidths=0.7,
+            zorder=8, alpha=0.95,
+        )
 
 ax4.set_xticks(x_metrics)
 ax4.set_xticklabels(
@@ -884,11 +893,7 @@ ax5.grid(True, alpha=0.15, linewidth=0.5)
 # MAIN TITLE
 # =====================================================================
 
-fig.suptitle(
-    'Projected Striga economic impacts under agricultural development '
-    'and climate change scenarios (2020\u20132050)',
-    fontsize=FONT['suptitle'], fontweight='bold', y=0.97,
-)
+# In-figure title removed \u2014 the manuscript caption carries it (Nature artwork guidance).
 
 # =====================================================================
 # SAVE

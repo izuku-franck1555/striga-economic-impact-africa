@@ -1,0 +1,297 @@
+{
+ "regions": [
+  "West Africa",
+  "East Africa",
+  "Southern Africa"
+ ],
+ "metrics": [
+  "Production Growth",
+  "Loss Rate Change",
+  "Technology Adoption",
+  "Control Coverage",
+  "Climate Impact"
+ ],
+ "values": {
+  "West Africa": {
+   "Production Growth": 0.2117659406524206,
+   "Loss Rate Change": 0.7341749333485605,
+   "Technology Adoption": 0.023183462276548102,
+   "Control Coverage": 0.5265534581340041,
+   "Climate Impact": 0.6506283601695283
+  },
+  "East Africa": {
+   "Production Growth": 0.5387140546480855,
+   "Loss Rate Change": 0.5506271142736854,
+   "Technology Adoption": 0.1088397942207252,
+   "Control Coverage": 0.5417571873990553,
+   "Climate Impact": 0.831723236226031
+  },
+  "Southern Africa": {
+   "Production Growth": 0.2706451612903226,
+   "Loss Rate Change": 0.5114049447535531,
+   "Technology Adoption": 0.07390561638827958,
+   "Control Coverage": 0.6714410310976029,
+   "Climate Impact": 0.8927467489424799
+  }
+ },
+ "country_values": {
+  "West Africa": {
+   "Production Growth": [
+    [
+     "Burkina Faso",
+     0.1662
+    ],
+    [
+     "Ghana",
+     0.2554
+    ],
+    [
+     "Mali",
+     0.3411
+    ],
+    [
+     "Nigeria",
+     0.0844
+    ]
+   ],
+   "Loss Rate Change": [
+    [
+     "Burkina Faso",
+     0.5701
+    ],
+    [
+     "Ghana",
+     0.7004
+    ],
+    [
+     "Mali",
+     1
+    ],
+    [
+     "Nigeria",
+     0.6662
+    ]
+   ],
+   "Technology Adoption": [
+    [
+     "Burkina Faso",
+     0.0832
+    ],
+    [
+     "Ghana",
+     0
+    ],
+    [
+     "Mali",
+     0
+    ],
+    [
+     "Nigeria",
+     0.0095
+    ]
+   ],
+   "Control Coverage": [
+    [
+     "Burkina Faso",
+     0.7001
+    ],
+    [
+     "Ghana",
+     0.4564
+    ],
+    [
+     "Mali",
+     0.3473
+    ],
+    [
+     "Nigeria",
+     0.6023
+    ]
+   ],
+   "Climate Impact": [
+    [
+     "Burkina Faso",
+     1.0
+    ],
+    [
+     "Ghana",
+     0.6513
+    ],
+    [
+     "Mali",
+     0.1197
+    ],
+    [
+     "Nigeria",
+     0.8315
+    ]
+   ]
+  },
+  "East Africa": {
+   "Production Growth": [
+    [
+     "Ethiopia",
+     0.894
+    ],
+    [
+     "Kenya",
+     0.4594
+    ],
+    [
+     "Tanzania",
+     0.7502
+    ],
+    [
+     "Uganda",
+     0.0513
+    ]
+   ],
+   "Loss Rate Change": [
+    [
+     "Ethiopia",
+     0.5043
+    ],
+    [
+     "Kenya",
+     0.6807
+    ],
+    [
+     "Tanzania",
+     0.531
+    ],
+    [
+     "Uganda",
+     0.4865
+    ]
+   ],
+   "Technology Adoption": [
+    [
+     "Ethiopia",
+     0
+    ],
+    [
+     "Kenya",
+     0.041
+    ],
+    [
+     "Tanzania",
+     0
+    ],
+    [
+     "Uganda",
+     0.3943
+    ]
+   ],
+   "Control Coverage": [
+    [
+     "Ethiopia",
+     0.4971
+    ],
+    [
+     "Kenya",
+     0.6355
+    ],
+    [
+     "Tanzania",
+     0.4926
+    ]
+   ],
+   "Climate Impact": [
+    [
+     "Ethiopia",
+     0.7818
+    ],
+    [
+     "Kenya",
+     0.938
+    ],
+    [
+     "Tanzania",
+     0.6701
+    ],
+    [
+     "Uganda",
+     0.937
+    ]
+   ]
+  },
+  "Southern Africa": {
+   "Production Growth": [
+    [
+     "Zambia",
+     0.2706
+    ]
+   ],
+   "Loss Rate Change": [
+    [
+     "Zambia",
+     0.5114
+    ]
+   ],
+   "Technology Adoption": [
+    [
+     "Zambia",
+     0.0739
+    ]
+   ],
+   "Control Coverage": [
+    [
+     "Zambia",
+     0.6714
+    ]
+   ],
+   "Climate Impact": [
+    [
+     "Zambia",
+     0.8927
+    ]
+   ]
+  }
+ },
+ "std": {
+  "West Africa": {
+   "Production Growth": 0.11095281739516574,
+   "Loss Rate Change": 0.1856070650949527,
+   "Technology Adoption": 0.040276337854792135,
+   "Control Coverage": 0.15590828358204836,
+   "Climate Impact": 0.3815112119317978
+  },
+  "East Africa": {
+   "Production Growth": 0.3718591800899923,
+   "Loss Rate Change": 0.08858498461151618,
+   "Technology Adoption": 0.19130538274636674,
+   "Control Coverage": 0.0812399334728328,
+   "Climate Impact": 0.13037836490536178
+  },
+  "Southern Africa": {
+   "Production Growth": 0.0,
+   "Loss Rate Change": 0.0,
+   "Technology Adoption": 0.0,
+   "Control Coverage": 0.0,
+   "Climate Impact": 0.0
+  }
+ },
+ "n": {
+  "West Africa": {
+   "Production Growth": 4,
+   "Loss Rate Change": 4,
+   "Technology Adoption": 4,
+   "Control Coverage": 4,
+   "Climate Impact": 4
+  },
+  "East Africa": {
+   "Production Growth": 4,
+   "Loss Rate Change": 4,
+   "Technology Adoption": 4,
+   "Control Coverage": 3,
+   "Climate Impact": 4
+  },
+  "Southern Africa": {
+   "Production Growth": 1,
+   "Loss Rate Change": 1,
+   "Technology Adoption": 1,
+   "Control Coverage": 1,
+   "Climate Impact": 1
+  }
+ }
+}

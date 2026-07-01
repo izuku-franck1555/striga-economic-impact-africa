@@ -69,7 +69,7 @@ print("=" * 80)
 # =====================
 script_dir = os.path.dirname(os.path.abspath(__file__))
 # Data is relative to SCRIPTS/CURRENT-ECONOMIC-IMPACT/ in the original tree
-striga_base = '/Users/francktonle/Downloads/STRIGA_ANALYSIS'
+striga_base = '/Volumes/PARTA/STRIGA_ANALYSIS'
 base_path = os.path.join(striga_base, 'monte_carlo_publication/monte_carlo_publication/data/mc_results')
 
 # Find the calibrated results file (100k iterations)
@@ -172,12 +172,17 @@ for country in country_stats.index:
         phys_loss = country_stats.loc[country, 'phys_mean_tonnes']
         production = maize_production[country]
         prop_loss = (phys_loss / production) * 100 if production > 0 else 0
+        # Genuine per-country proportional 95% CI = physical-loss 95% CI / national production
+        prop_ci_low = (country_stats.loc[country, 'phys_ci_95_low_tonnes'] / production) * 100 if production > 0 else 0
+        prop_ci_high = (country_stats.loc[country, 'phys_ci_95_high_tonnes'] / production) * 100 if production > 0 else 0
         region = region_map.get(country, 'Unknown')
 
         proportional_data.append({
             'countries': country,
             'economic_loss_millions': econ_loss / 1e6,
             'proportional_loss_percent': prop_loss,
+            'proportional_ci_low': prop_ci_low,
+            'proportional_ci_high': prop_ci_high,
             'region': region
         })
 
@@ -189,7 +194,9 @@ top10_prop = panel_c_sorted.head(10)
 
 panel_d_data = {
     'countries': top10_prop['countries'].tolist(),
-    'proportional_loss_percent': top10_prop['proportional_loss_percent'].tolist()
+    'proportional_loss_percent': top10_prop['proportional_loss_percent'].tolist(),
+    'proportional_ci_low': top10_prop['proportional_ci_low'].tolist(),
+    'proportional_ci_high': top10_prop['proportional_ci_high'].tolist()
 }
 
 # Panel E/F: Regional data
@@ -454,13 +461,15 @@ y_pos = np.arange(len(countries_d))
 bars_c = ax4.barh(y_pos, prop_losses, color=colors_gradient_d,
                alpha=0.85, edgecolor='white', linewidth=0.8)
 
-cv = panel_a_data['cv']
+ci_low_c = panel_d_data['proportional_ci_low'][:10]
+ci_high_c = panel_d_data['proportional_ci_high'][:10]
 for i, loss in enumerate(prop_losses):
-    error = max(loss * cv * 0.5, 0.5)
-    ax4.errorbar(loss, i, xerr=error, fmt='none',
+    err_lo = max(loss - ci_low_c[i], 0)
+    err_hi = max(ci_high_c[i] - loss, 0)
+    ax4.errorbar(loss, i, xerr=[[err_lo], [err_hi]], fmt='none',
                 capsize=3, capthick=1.5, elinewidth=1.5,
                 color='black', alpha=0.5, zorder=3)
-    ax4.text(loss + error + 0.5, i, f'{loss:.1f}%',
+    ax4.text(ci_high_c[i] + 0.5, i, f'{loss:.1f}%',
             va='center', fontsize=10, fontweight='bold')
 
 ax4.set_yticks(y_pos)
@@ -469,7 +478,7 @@ ax4.set_xlabel('Loss (% of national production)', fontsize=13)
 ax4.text(-0.02, 1.08, 'c', transform=ax4.transAxes, fontsize=16, fontweight='bold', va='top')
 ax4.tick_params(axis='x', labelsize=11)
 ax4.grid(True, axis='x', alpha=0.15, linestyle='--')
-ax4.set_xlim(0, max(prop_losses) * 1.2)
+ax4.set_xlim(0, max(ci_high_c) * 1.15)
 
 # ====================
 # PANEL E: Regional Distribution (Calibrated values)
@@ -531,7 +540,7 @@ for region in regions_list:
 
 # Violin plots
 parts = ax6.violinplot(normalized_data, positions=positions, widths=0.7,
-                       showmeans=True, showmedians=True, showextrema=True)
+                       showmeans=False, showmedians=False, showextrema=False)
 
 for i, (pc, region) in enumerate(zip(parts['bodies'], regions_list)):
     pc.set_facecolor(REGION_COLORS[region])
@@ -539,10 +548,8 @@ for i, (pc, region) in enumerate(zip(parts['bodies'], regions_list)):
     pc.set_edgecolor(REGION_COLORS[region])
     pc.set_linewidth(1.5)
 
-parts['cmeans'].set_color(PROF_COLORS['danger'])
-parts['cmeans'].set_linewidth(2)
-parts['cmedians'].set_color('black')
-parts['cmedians'].set_linewidth(2)
+# Violin mean/median/extrema lines disabled (showmeans/medians/extrema=False):
+# the overlaid box plot carries median + IQR + whiskers, avoiding duplicate red lines.
 
 # Box plot overlay
 bp = ax6.boxplot(normalized_data, positions=positions, widths=0.3,
